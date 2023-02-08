@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.hphuc5453.stripe3dseruce2.databinding.CheckoutActivityBinding
 import com.stripe.android.PaymentConfiguration
-import com.stripe.android.core.utils.ContextUtils.packageInfo
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import okhttp3.*
@@ -37,7 +36,6 @@ class CheckoutActivity : AppCompatActivity() {
         // Hook up the pay button
         binding.payButton.setOnClickListener(::onPayClicked)
         binding.payButton.isEnabled = false
-        binding.cardMultiline.postalCodeRequired = false
 
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
 
