@@ -58,14 +58,19 @@ class CheckoutActivity : AppCompatActivity() {
             .newCall(request)
             .enqueue(object: Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    binding.createButton.isEnabled = true
-                    binding.status.text = "Failed to load data"
+                    runOnUiThread {
+                        binding.createButton.isEnabled = true
+                        binding.status.text = "Failed to load data"
+                    }
+
                 }
 
                 override fun onResponse(call: Call, response: Response) {
                     if (!response.isSuccessful) {
                         binding.createButton.isEnabled = true
-                        binding.status.text = "Failed to load page"
+                        runOnUiThread {
+                            binding.status.text = "Failed to load page"
+                        }
                     } else {
                         val responseData = response.body?.string()
                         val responseJson = responseData?.let { JSONObject(it) } ?: JSONObject()
@@ -80,7 +85,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun onPayClicked(view: View) {
-        val configuration = PaymentSheet.Configuration("Merchant display name")
+        val configuration = PaymentSheet.Configuration(binding.product.text.toString())
 
         // Present Payment Sheet
         paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret, configuration)
